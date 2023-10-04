@@ -1,12 +1,20 @@
+radio.onReceivedNumber(function (receivedNumber) {
+    if (receivedNumber == 1) {
+        alarm(3)
+    } else {
+        alarm(0)
+    }
+})
 input.onButtonPressed(Button.A, function () {
-    alarm(1)
+    radio.sendNumber(1)
 })
 function alarm (repeatTimes: number) {
     for (let index = 0; index < repeatTimes; index++) {
-        pins.digitalWritePin(DigitalPin.P0, 1)
-        basic.pause(1000)
-        pins.digitalWritePin(DigitalPin.P0, 0)
-        basic.pause(1000)
+        pins.digitalWritePin(DigitalPin.P1, 1)
+        basic.pause(3000)
+        pins.digitalWritePin(DigitalPin.P1, 0)
+        basic.pause(3000)
+        music.play(music.stringPlayable("C C5 C C5 C C5 C C5 ", 385), music.PlaybackMode.UntilDone)
     }
 }
 basic.forever(function () {
@@ -17,7 +25,7 @@ basic.forever(function () {
         // 
         if (input.temperature() >= 16 && input.temperature() <= 46) {
             if (input.soundLevel() >= 150) {
-                alarm(3)
+                radio.sendNumber(1)
             }
         }
     }
